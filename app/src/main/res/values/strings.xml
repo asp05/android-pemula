@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">AndroidFundamentalSubmissionAwal</string>
+    <string name="image_event">Image Event</string>
+    <string name="placeholder">placeholder</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="finished">Finished</string>
+    <string name="join">Registrasi Sekarang</string>
+    <string name="sisa_kuota">sisa kuota</string>
+    <string name="penyelenggara">Penyelenggara : %1$s</string>
+    <string name="sisa_kuota_orang">Sisa Kuota : %1$s Orang</string>
+    <string name="waktu">Waktu : %1$s - %2$s</string>
+</resources>

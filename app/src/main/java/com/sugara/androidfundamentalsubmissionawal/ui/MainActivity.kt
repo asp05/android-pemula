@@ -3,11 +3,16 @@ package com.sugara.androidfundamentalsubmissionawal.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sugara.androidfundamentalsubmissionawal.R
 import com.sugara.androidfundamentalsubmissionawal.data.response.ListEventsItem
 import com.sugara.androidfundamentalsubmissionawal.databinding.ActivityMainBinding
+import com.sugara.androidfundamentalsubmissionawal.ui.setting.SettingPreferences
+import com.sugara.androidfundamentalsubmissionawal.ui.setting.SettingViewModel
+import com.sugara.androidfundamentalsubmissionawal.ui.setting.SettingViewModelFactory
+import com.sugara.androidfundamentalsubmissionawal.ui.setting.dataStore
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,6 +40,8 @@ class MainActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         binding.rvEvents.layoutManager = layoutManager
+
+
     }
 
 

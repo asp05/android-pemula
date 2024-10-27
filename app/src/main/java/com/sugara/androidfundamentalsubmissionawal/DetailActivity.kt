@@ -85,7 +85,6 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setEvent(event: Event) {
-        Log.d("DetailActivity", "setEvent: $event")
         category.text = event.category
         name.text = event.name
         description.text = HtmlCompat.fromHtml(

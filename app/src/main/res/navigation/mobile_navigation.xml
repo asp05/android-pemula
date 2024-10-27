@@ -22,4 +22,12 @@
         android:name="com.sugara.androidfundamentalsubmissionawal.ui.finished.FinishedFragment"
         android:label="@string/finished"
         tools:layout="@layout/fragment_finished" />
+
+    <fragment
+        android:id="@+id/navigation_setting"
+        android:name="com.sugara.androidfundamentalsubmissionawal.ui.setting.SettingFragment"
+        android:label="@string/setting"
+        tools:layout="@layout/fragment_setting" />
+
+
 </navigation>

@@ -13,4 +13,6 @@
     <string name="penyelenggara">Penyelenggara : %1$s</string>
     <string name="sisa_kuota_orang">Sisa Kuota : %1$s Orang</string>
     <string name="waktu">Waktu : %1$s - %2$s</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="setting">Setting</string>
 </resources>

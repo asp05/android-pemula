@@ -10,11 +10,17 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.text.HtmlCompat
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.sugara.androidfundamentalsubmissionawal.data.local.entity.EventsEntity
 import com.sugara.androidfundamentalsubmissionawal.data.response.Event
 import com.sugara.androidfundamentalsubmissionawal.data.response.EventDetailResponse
 import com.sugara.androidfundamentalsubmissionawal.data.retrofit.ApiConfig
+import com.sugara.androidfundamentalsubmissionawal.ui.EventViewModel
+import com.sugara.androidfundamentalsubmissionawal.ui.favorite.FavoriteViewModelFactory
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,17 +32,36 @@ class DetailActivity : AppCompatActivity() {
         const val EXTRA_ID = "extra_id"
     }
 
-      private lateinit var category : TextView
-      private lateinit var name : TextView
-      private lateinit var description : TextView
-      private lateinit var ivPicture : ImageView
-      private lateinit var quota : TextView
-      private lateinit var time : TextView
-      private lateinit var owner : TextView
-      private lateinit var progressBar : ProgressBar
-      private lateinit var btJoin : Button
+    private lateinit var category : TextView
+    private lateinit var name : TextView
+    private lateinit var description : TextView
+    private lateinit var ivPicture : ImageView
+    private lateinit var quota : TextView
+    private lateinit var time : TextView
+    private lateinit var owner : TextView
+    private lateinit var progressBar : ProgressBar
+    private lateinit var btJoin : Button
+    private lateinit var btnFavorite : FloatingActionButton
+
+    private lateinit var detailViewModel: DetailViewModel
+
+    private var eventLocal: EventsEntity? = null
+    private var isFavorite: Boolean = false
 
 
+    private fun observeEvent(id: Int) {
+        detailViewModel.getEventById(id).observe(this) { event ->
+            Log.d("DetailActivity", "cek observe detail view: $event")
+            if (event != null) {
+                isFavorite = true
+                btnFavorite.setImageDrawable(getDrawable(R.drawable.baseline_favorite_24))
+            } else {
+                isFavorite = false
+                btnFavorite.setImageDrawable(getDrawable(R.drawable.baseline_favorite_border_24))
+            }
+            Log.d("DetailActivity", "event local saat di observe: $eventLocal")
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
@@ -50,13 +75,33 @@ class DetailActivity : AppCompatActivity() {
         time = findViewById(R.id.tvTime)
         owner = findViewById(R.id.tvOwner)
         btJoin = findViewById(R.id.btJoin)
+        btnFavorite = findViewById(R.id.btnFavorite)
 
+        detailViewModel = obtainViewModel(this)
 
 
 
         val id = intent.getIntExtra(EXTRA_ID, 0)
         findEvent(id)
+        observeEvent(id)
 
+        btnFavorite.setOnClickListener {
+            Log.d("DetailActivity", "event local saat di click: $eventLocal")
+            if (!isFavorite) {
+                detailViewModel.insert(eventLocal!!)
+                Toast.makeText(this, "Berhasil menambahkan ke favorite", Toast.LENGTH_SHORT).show()
+            }else{
+                detailViewModel.delete(eventLocal!!)
+                Toast.makeText(this, "Berhasil menghapus dari favorite", Toast.LENGTH_SHORT).show()
+            }
+            observeEvent(id)
+        }
+
+    }
+
+    private fun obtainViewModel(activity: AppCompatActivity): DetailViewModel {
+        val factory = FavoriteViewModelFactory.getInstance(activity.application)
+        return ViewModelProvider(activity, factory).get(DetailViewModel::class.java)
     }
 
     private fun findEvent(id:Int) {
@@ -98,6 +143,13 @@ class DetailActivity : AppCompatActivity() {
         quota.text = getString(R.string.sisa_kuota_orang, sisa_quota.toString())
         time.text = getString(R.string.waktu, event.beginTime, event.endTime)
         owner.text = getString(R.string.penyelenggara, event.ownerName)
+
+        //masukan event local
+        eventLocal = EventsEntity(
+            event.id,
+            event.name,
+            event.imageLogo
+        )
 
         btJoin.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(event.link))
